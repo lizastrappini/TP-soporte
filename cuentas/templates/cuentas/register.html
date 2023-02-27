@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block body %}
+<div class="container-register">
+    <div class="form-container">
+        <a href="{% url 'home' %}">
+            <i class="fa fa-arrow-left" aria-hidden="true"></i>
+        </a>
+
+        <form action="#" method="post">
+            <h2 class="form-title">Crea tu cuenta</h2>
+            {% csrf_token %}
+            {{ form.as_div }}
+            <input class="btn btn-primary" type="submit" value="Crear cuenta">
+        </form>
+    </div>
+</div>
+{% endblock %}

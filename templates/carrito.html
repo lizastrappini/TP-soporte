@@ -1,0 +1,28 @@
+{% if request.session.carrito.items %}
+{% for key, value in request.session.carrito.items %}
+<div class="card mb-3" style="max-height: 150px;min-width: 500px;max-width: 500px;">
+  <div class="row g-0 productoCarrito">
+    <div class="col-md-4 imagenCarrito">
+      <img  src="{{value.imagen}}" style="max-width: 110px;max-height: 110px;min-height: 110px;min-width: 110px;margin:10%;" alt="...">
+    </div>
+    <div class="col-md-8 infoProdCarrito">
+      <div class="card-body" style="color:black;margin-left: 5px;">
+        <h5 class="card-title" style="padding:0px;margin:0px;">{{value.nombre}}</h5>  
+        <p class="card-text" style="padding:0px;margin:0px;"><small class="text-muted">${{value.precio}}</small><small style="margin-left: 14px;" class="text-muted">Talle: {{value.talle}}</small></p>
+        <p class="card-text" style="padding:0px;margin:0px;">cantidad: {{value.cantidad}} &nbsp &nbsp ${{value.acumulado}}</p>
+      <div class="boton">
+        <a href="{% url 'eliminarProducto' value.producto_id %}" class="badge  btn-danger" style="margin-left: 254px;margin-right:0px;margin-top: 14px;"><box-icon name='trash-alt' type='solid' ></box-icon></a>
+      </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endfor %}
+{% else %}
+<div class="alert alert-danger text-center"> Sin Productos </div>
+{% endif %}
+<p class="text-uppercase fw-bolder">Total: $ {{total_carrito}}</p>
+<div class="row text-center fw-bold">
+    <div class="col-6"><a href="{% url 'limpiarCarrito' %}" class="btn btn-danger">Limpiar</a></div>
+    <div class="col-6"><a href="{% url 'checkout' %}" class="btn btn-success">Ir a pagar</a></div>
+</div>

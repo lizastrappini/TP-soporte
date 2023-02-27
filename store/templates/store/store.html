@@ -1,0 +1,139 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block titulo %}Store{% endblock %}
+{% block body %}
+{% include 'nav.html' %}
+{% if messages %}
+{% for message in messages %}
+<div class="alert alert-warning" id="alerta" role="alert" {% if message.tags %} class="{{ message.tags }}" {% endif %}>
+    {{ message }}
+</div>
+{% endfor %}
+{% endif %}
+<div class="container-fluid">
+    <main>
+        <aside class="filtros">
+            <!-- Cada filtro hay que hacerlo un form-->
+            <!-- Titulo busqueda -->
+            <!-- Por default, se abre mostrando a todos los productos -->
+            <h3>Filtros de busqueda</h3>
+            <br>
+            <div class="list-group">
+                <h4>Categoria</h4>
+                {% for c in categorias %}
+                <a href="{% url 'filtro' c.id %}" class="list-group-item-action">{{c.nombre}} </a>
+                {% endfor %}
+
+                <br>
+            </div>
+            <!-- Sexo -->
+            <div class="list-group">
+                <h4>Sexo</h4>
+                <a href="{% url 'filtroS' 'H' %}" class="list-group-item-action">Hombre</a>
+                <a href="{% url 'filtroS' 'M' %}" class="list-group-item-action">Mujer</a>
+                <a href="{% url 'filtroS' 'U' %}" class="list-group-item-action">Unisex</a>
+            </div>
+            <br>
+            <!-- Envio -->
+            <div class="envio list-group">
+                <h4>Envio</h4>
+                <a href="{% url 'filtroEnvio' 'True' %}" class="list-group-item-action">Envio gratis</a>
+            </div>
+            <br>
+            <!-- Precio -->
+            <h4>Precio</h4>
+            <div class="precio">
+                <input type="number" name="preciomin" id="preciomin" placeholder="min" min="0">-
+                <input type="number" name="preciomax" id="preciomax" placeholder="max" min="0">
+                <button class="btn btn-primary .btn-sm" type="submit"
+                    style="max-height: 25px;padding-bottom:5px;padding-top: 0px; ">Ir</button>
+            </div>
+            <br>
+            <br>
+            <a href="{% url 'home' %}" class="list-group-item-action">
+                <h5>Borrar filtros</h5>
+            </a>
+        </aside>
+
+        <section class="productos">
+
+            {% for p in productos %}
+            <div class="card">
+                <a class="view-product-btn" href="#" id="p-{{p.id}}"><img class="imagenProd" src="{{p.imagen.url}}"
+                        alt="Imagen producto"></a>
+                <div class="card-body">
+                    <a class="view-product-btn" href="#" id="p-{{p.id}}">
+                        <h3 class="card-title" style="font-size: 20px;">{{p.nombre}}</h3>
+                    </a>
+                    <p class="card-text" style="margin:0px;padding:0px;">${{p.precio}}</p>
+                    {% if p.envio_gratis == True %}
+                    <p style="margin:0px;padding:0px;color:green;"> Envio Gratis </p>
+                    {% else %}
+                    <p style="margin:0px;padding:0px;"> &nbsp </p>
+                    {% endif %}
+                    {% if p.stock == 0 %}
+                    <p style="margin:0px;padding:0px;color:red;">Sin Stock</p>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="overlay" id="o-p-{{p.id}}">
+                <div class="product-view">
+                    <img src="{{p.imagen.url}}" alt="">
+                    <div class="product-data">
+                        <h3>{{p.nombre}}</h3>
+                        <p class="precio">$ {{p.precio}}</p>
+
+                        <form action="{% url 'agregarProducto' p.id %}" method="GET">
+                            <p>Talle:</p>
+                            <div class="talles-btn-box">
+                                {% if p.unidad_talle == 'N' %}
+                                <input class="ratioBtn" type="radio" name="talle" id="p-{{p.id}}-t-38" required value="38">
+                                <label for="p-{{p.id}}-t-38">38</label>
+                                <input class="ratioBtn" type="radio" name="talle" id="p-{{p.id}}-t-39" required value="39">
+                                <label for="p-{{p.id}}-t-39">39</label>
+                                <input class="ratioBtn" type="radio" name="talle" id="p-{{p.id}}-t-40" required value="40">
+                                <label for="p-{{p.id}}-t-40">40</label>
+                                <input class="ratioBtn" type="radio" name="talle" id="p-{{p.id}}-t-41" required value="41">
+                                <label for="p-{{p.id}}-t-41">41</label>
+                                <input class="ratioBtn" type="radio" name="talle" id="p-{{p.id}}-t-42" required value="42">
+                                <label for="p-{{p.id}}-t-42">42</label>
+                                {% elif p.unidad_talle == 'L' %}
+                                <input class="ratioBtn" type="radio" name="talle" id="p-{{p.id}}-t-XS" required value="XS">
+                                <label for="p-{{p.id}}-t-XS">XS</label>
+                                <input class="ratioBtn" type="radio" name="talle" id="p-{{p.id}}-t-S"  required value="S">
+                                <label for="p-{{p.id}}-t-S">S</label>
+                                <input class="ratioBtn" type="radio" name="talle" id="p-{{p.id}}-t-M"  required value="M">
+                                <label for="p-{{p.id}}-t-M">M</label>
+                                <input class="ratioBtn" type="radio" name="talle" id="p-{{p.id}}-t-L"  required value="L">
+                                <label for="p-{{p.id}}-t-L">L</label>
+                                <input class="ratioBtn" type="radio" name="talle" id="p-{{p.id}}-t-XL" required value="XL">
+                                <label for="p-{{p.id}}-t-XL">XL</label>
+                                {% endif %}
+                            </div>
+                            {% if p.stock == 0 %}
+                            <p style="width:240px;margin-top: 26px;">Proximamente disponible. <br>Este producto esta agotado en este momento.</p>
+                            {% else %}
+                            <input class="add-product-btn btn-primary" type="submit" disabled value="Agregar al carrito">
+                            {% endif %}
+                        </form>
+                    </div>
+                    <button class="close-modal-btn"><i class="fa fa-times" aria-hidden="true"></i></button>
+                </div>
+            </div>
+            {% endfor %}
+        </section>
+    </main>
+</div>
+
+
+<!-- iria en main.js pero ahi no funciona  -->
+<script>
+    window.setTimeout(function () {
+        $("#alerta").fadeTo(500, 0).slideUp(500, function () {
+            $(this).remove();
+        });
+    }, 1500);
+</script>
+
+{% endblock%}

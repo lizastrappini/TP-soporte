@@ -1,0 +1,58 @@
+body{
+    margin: 0px;
+    padding: 0px;
+    
+}
+.d-block{
+    max-height: 250px;
+    max-width: 100%;
+}
+
+#carousel{
+    margin: 0px;
+    padding: 0px;
+}
+
+.categorias{
+    margin-left:20px;
+    margin-top: 5%;
+    
+    
+}
+.container{
+    margin-left:90px;
+    
+}
+.cat{
+    min-width: 150px;
+    border: none;
+    
+    
+}
+.precioviejo{
+    text-decoration:line-through;
+    
+}
+.imagenproducto{
+    max-width: 180px;
+    max-height: 180px;
+}
+
+.texto{
+    font-family: 'Roboto', sans-serif;
+    font-size: 20px;
+}
+.cat:hover{
+    background-color: rgba(120, 209, 231, 0.459);
+}
+
+.card-body{
+    align-items: center;
+    text-align: center;
+}
+
+.ofertas{
+    margin-left: 10%;
+    overflow: hidden;
+}
+
